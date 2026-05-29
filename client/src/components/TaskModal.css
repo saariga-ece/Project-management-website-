@@ -1,0 +1,188 @@
+﻿.modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(15, 23, 42, 0.5);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 1000;
+
+  backdrop-filter: blur(4px);
+}
+
+.task-modal {
+  width: 100%;
+  max-width: 650px;
+
+  background: white;
+
+  border-radius: 28px;
+
+  padding: 32px;
+
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.2);
+
+  animation: modalEnter 0.25s ease;
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* HEADER */
+
+.task-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  margin-bottom: 30px;
+}
+
+.modal-subtitle {
+  font-size: 13px;
+  letter-spacing: 1px;
+  font-weight: 600;
+
+  color: #64748b;
+}
+
+.task-modal-header h2 {
+  margin-top: 8px;
+  font-size: 32px;
+}
+
+.modal-close {
+  width: 42px;
+  height: 42px;
+
+  border: none;
+  border-radius: 14px;
+
+  background: #f1f5f9;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* FORM */
+
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #334155;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  border: 1px solid #e2e8f0;
+
+  background: #f8fafc;
+
+  border-radius: 14px;
+
+  padding: 16px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: #2563eb;
+  background: white;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+/* ACTIONS */
+
+.task-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+
+  margin-top: 10px;
+}
+
+.cancel-btn {
+  border: none;
+
+  background: #e2e8f0;
+
+  padding: 14px 20px;
+
+  border-radius: 14px;
+
+  font-weight: 600;
+}
+
+.save-btn {
+  border: none;
+
+  background: #2563eb;
+  color: white;
+
+  padding: 14px 22px;
+
+  border-radius: 14px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-weight: 600;
+}
+
+.save-btn:hover {
+  background: #1d4ed8;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+  .task-modal {
+    margin: 20px;
+    padding: 24px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .task-form-actions {
+    flex-direction: column;
+  }
+
+  .cancel-btn,
+  .save-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
