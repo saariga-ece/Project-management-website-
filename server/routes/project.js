@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/', async (req, res, next) => {
   try {
-    const [projects] = await db.query(
+    const { rows } = await db.query(
       `SELECT p.id, p.name, p.description, p.created_at,
         COUNT(t.id) AS task_count
       FROM projects p
@@ -13,7 +13,7 @@ router.get('/', async (req, res, next) => {
       GROUP BY p.id
       ORDER BY p.created_at DESC`
     );
-    res.json(projects);
+    res.json(rows);
   } catch (error) {
     next(error);
   }
@@ -25,11 +25,10 @@ router.post('/', async (req, res, next) => {
     if (!name) {
       return res.status(400).json({ error: 'Project name is required.' });
     }
-    const [result] = await db.query(
-      'INSERT INTO projects (name, description) VALUES (?, ?)',
+    const { rows } = await db.query(
+      'INSERT INTO projects (name, description) VALUES ($1, $2) RETURNING *',
       [name.trim(), description || '']
     );
-    const [rows] = await db.query('SELECT * FROM projects WHERE id = ?', [result.insertId]);
     res.status(201).json(rows[0]);
   } catch (error) {
     next(error);
@@ -43,8 +42,10 @@ router.put('/:id', async (req, res, next) => {
     if (!name) {
       return res.status(400).json({ error: 'Project name is required.' });
     }
-    await db.query('UPDATE projects SET name = ?, description = ? WHERE id = ?', [name.trim(), description || '', projectId]);
-    const [rows] = await db.query('SELECT * FROM projects WHERE id = ?', [projectId]);
+    const { rows } = await db.query(
+      'UPDATE projects SET name = $1, description = $2 WHERE id = $3 RETURNING *',
+      [name.trim(), description || '', projectId]
+    );
     res.json(rows[0]);
   } catch (error) {
     next(error);
@@ -54,8 +55,8 @@ router.put('/:id', async (req, res, next) => {
 router.delete('/:id', async (req, res, next) => {
   try {
     const projectId = Number(req.params.id);
-    await db.query('DELETE FROM tasks WHERE project_id = ?', [projectId]);
-    await db.query('DELETE FROM projects WHERE id = ?', [projectId]);
+    await db.query('DELETE FROM tasks WHERE project_id = $1', [projectId]);
+    await db.query('DELETE FROM projects WHERE id = $1', [projectId]);
     res.json({ deleted: true });
   } catch (error) {
     next(error);

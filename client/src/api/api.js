@@ -1,7 +1,7 @@
 ﻿import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:4000/api',
+  baseURL: 'https://project-management-website-5q9c.onrender.com/api',
   timeout: 8000,
 });
 

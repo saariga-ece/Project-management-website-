@@ -18,7 +18,12 @@ app.get('/api/health', (req, res) => {
 
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(500).json({ error: 'Server error' });
+  const response = { error: 'Server error' };
+  if (process.env.NODE_ENV !== 'production') {
+    response.details = err.message;
+    response.stack = err.stack;
+  }
+  res.status(500).json(response);
 });
 
 app.listen(port, () => {
